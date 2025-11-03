@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WarshAyahController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -13,10 +15,17 @@ Route::post('/logout', [LoginController::class, 'destroy'])->middleware('auth');
 Route::get('/telegram/callback', [LoginController::class, 'telegramCallback'])->name('telegram.callback');
 
 Route::middleware('auth')->group(function () {
-    Route::inertia('/', 'Home');
+    Route::get('/', [PostController::class, 'index']);
     Route::inertia('/settings', 'Settings');
 
     Route::get('/users', [UserController::class, 'index']);
     Route::get('/users/create', [UserController::class, 'create'])->can('create', User::class);
     Route::post('/users/create', [UserController::class, 'store']);
+
+    Route::get('/warsh-ayahs', [WarshAyahController::class, 'index'])->name('warsh-ayahs.index');
+
+    Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
+    Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
+    Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
+    Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
 });

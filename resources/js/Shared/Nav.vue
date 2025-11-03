@@ -4,11 +4,11 @@ import NavLink from './NavLink.vue';
 
 <template>
     <nav>
-        <ul class="flex space-x-4">
+        <ul class="flex space-x-6">
             <li>
-                <NavLink href="/" :active="$page.component === 'Home'" class="flex flex-col items-center">
+                <NavLink href="/" :active="$page.component.startsWith('Posts')" class="flex flex-col items-center">
                     <i class="fas fa-home text-lg mb-1"></i>
-                    Home
+                    Posts
                 </NavLink>
             </li>
 

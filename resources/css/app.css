@@ -5,7 +5,28 @@
 @source '../**/*.blade.php';
 @source '../**/*.js';
 
+@font-face {
+    font-family: 'Uthmanic Warsh';
+    src: url('/fonts/uthmanic_warsh_v21.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-uthmanic-warsh: 'Uthmanic Warsh', serif;
+}
+
+html[dir="rtl"] {
+    text-align: right;
+}
+
+html[dir="rtl"] h1,
+html[dir="rtl"] h2,
+html[dir="rtl"] h3,
+html[dir="rtl"] h4,
+html[dir="rtl"] h5,
+html[dir="rtl"] h6 {
+    text-align: right;
 }

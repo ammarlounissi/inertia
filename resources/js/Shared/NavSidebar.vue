@@ -30,13 +30,19 @@ const username = computed(() => page.props.auth.user.username);
 
             <li>
                 <NavLink href="/posts" :active="$page.component.startsWith('Posts')">
-                    المقالات
+                    المنشورات
                 </NavLink>
             </li>
 
             <li>
                 <NavLink href="/users" :active="$page.component.startsWith('Users')">
                     المستخدمين
+                </NavLink>
+            </li>
+
+            <li>
+                <NavLink href="/warsh-ayahs" :active="$page.component.startsWith('WarshAyahs')">
+                    آيات ورش
                 </NavLink>
             </li>
 

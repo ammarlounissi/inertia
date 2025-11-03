@@ -22,7 +22,7 @@ const username = computed(() => page.props.auth.user.username);
         <header class="flex justify-between items-center">
             <div class="flex items-center gap-2">
                 <h1 class="font-bold text-lg md:hidden">
-تطبيق القران                </h1>
+الدورة الشتوية                  </h1>
 
                 <p>اهلا  , {{ username }}!</p>
             </div>
@@ -35,9 +35,9 @@ const username = computed(() => page.props.auth.user.username);
     <Sidebar />
 
     <!-- Main Content -->
-    <main class="mr-[20%] mt-20 min-h-screen md:mt-0">
-        <section class="p-6 pb-24">
-            <div class="max-w-3xl mx-auto">
+    <main class="lg:mr-[25%] mt-20 min-h-screen md:mt-0">
+        <section class="p-4 md:p-6 pb-24">
+            <div class="max-w-4xl mx-auto">
                 <slot />
             </div>
         </section>
@@ -46,7 +46,7 @@ const username = computed(() => page.props.auth.user.username);
     <!-- Footer -->
     <footer class="fixed bottom-0 left-0 right-0 bg-[#f5f5dc] shadow-lg md:hidden">
         <div class="max-w-3xl mx-auto px-6 py-3 flex justify-between items-center">
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-4">
                 <Hamburger />
                 <Nav />
             </div>
