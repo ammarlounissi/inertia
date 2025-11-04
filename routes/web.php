@@ -24,7 +24,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/users/{user}/edit', [UserController::class, 'edit'])->can('update', 'user');
     Route::put('/users/{user}', [UserController::class, 'update'])->can('update', 'user');
     Route::delete('/users/{user}', [UserController::class, 'destroy'])->can('delete', 'user');
-    Route::post('/users/{user}/profile-picture', [UserController::class, 'uploadProfilePicture']);
 
     Route::get('/warsh-ayahs', [WarshAyahController::class, 'index'])->name('warsh-ayahs.index');
 

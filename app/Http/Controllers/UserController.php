@@ -112,22 +112,4 @@ class UserController extends Controller
         return redirect('/users');
     }
 
-    /**
-     * Upload profile picture for the specified user.
-     */
-    public function uploadProfilePicture(Request $request, User $user)
-    {
-        $request->validate([
-            'profile_picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-
-        if ($request->hasFile('profile_picture')) {
-            $user->clearMediaCollection('profile_picture');
-            $user->addMediaFromRequest('profile_picture')
-                ->toMediaCollection('profile_picture');
-        }
-
-        return back()->with('success', 'Profile picture updated successfully.');
-    }
-
 }

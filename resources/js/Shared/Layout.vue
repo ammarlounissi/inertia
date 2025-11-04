@@ -2,22 +2,12 @@
 import Nav from './Nav.vue';
 import Hamburger from './Hamburger.vue';
 import Sidebar from './Sidebar.vue';
-import ProfilePictureForm from './ProfilePictureForm.vue';
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import { usePage } from '@inertiajs/vue3';
 
 const page = usePage();
 
 const username = computed(() => page.props.auth.user.username);
-const user = computed(() => page.props.auth.user);
-const showProfileForm = ref(false);
-
-const profilePictureUrl = computed(() => {
-    if (user.value.profile_picture_url) {
-        return user.value.profile_picture_url;
-    }
-    return '/default-avatar.png'; // You can add a default avatar image
-});
 
 </script>
 
@@ -37,14 +27,7 @@ const profilePictureUrl = computed(() => {
                 <p>اهلا  , {{ username }}!</p>
             </div>
 
-            <div class="flex items-center gap-2">
-                <img
-                    :src="profilePictureUrl"
-                    alt="Profile Picture"
-                    class="w-10 h-10 rounded-full cursor-pointer border-2 border-white shadow-md"
-                    @click="showProfileForm = true"
-                >
-            </div>
+
         </header>
     </section>
 
@@ -69,11 +52,4 @@ const profilePictureUrl = computed(() => {
             </div>
         </div>
     </footer>
-
-    <!-- Profile Picture Form Modal -->
-    <ProfilePictureForm
-        :user="user"
-        :show="showProfileForm"
-        @close="showProfileForm = false"
-    />
 </template>
