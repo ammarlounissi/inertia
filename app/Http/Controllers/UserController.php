@@ -32,7 +32,8 @@ class UserController extends Controller
                     'id' => $user->id,
                     'name' => $user->name,
                     'can' => [
-                        'update' => Auth::user()->can('update', $user)
+                        'update' => Auth::user()->can('update', $user),
+                        'delete' => Auth::user()->can('delete', $user)
                     ]
                 ]),
             'filters' => request()->only(['search']),
@@ -67,6 +68,66 @@ class UserController extends Controller
         User::create($attributes);
 
         return redirect('/users');
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(User $user)
+    {
+        return Inertia::render('Users/Edit', [
+            'user' => $user
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, User $user)
+    {
+        $attributes = $request->validate([
+            'name' => ['required'],
+            'email' => ['required', 'email'],
+            'password' => ['nullable', Password::min(8)],
+        ]);
+
+        if (empty($attributes['password'])) {
+            unset($attributes['password']);
+        } else {
+            $attributes['password'] = bcrypt($attributes['password']);
+        }
+
+        $user->update($attributes);
+
+        return redirect('/users');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(User $user)
+    {
+        $user->delete();
+
+        return redirect('/users');
+    }
+
+    /**
+     * Upload profile picture for the specified user.
+     */
+    public function uploadProfilePicture(Request $request, User $user)
+    {
+        $request->validate([
+            'profile_picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        if ($request->hasFile('profile_picture')) {
+            $user->clearMediaCollection('profile_picture');
+            $user->addMediaFromRequest('profile_picture')
+                ->toMediaCollection('profile_picture');
+        }
+
+        return back()->with('success', 'Profile picture updated successfully.');
     }
 
 }

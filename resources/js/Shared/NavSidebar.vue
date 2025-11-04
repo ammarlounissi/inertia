@@ -1,16 +1,32 @@
 <script setup>
 import NavLink from './NavLink.vue';
-import { computed } from 'vue';
+import ProfilePictureForm from './ProfilePictureForm.vue';
+import { computed, ref } from 'vue';
 import { usePage } from '@inertiajs/vue3';
 
 const emit = defineEmits(['linkClicked']);
 
 const page = usePage();
 const username = computed(() => page.props.auth.user.username);
+const user = computed(() => page.props.auth.user);
+const showProfileForm = ref(false);
+
+const profilePictureUrl = computed(() => {
+    if (user.value.profile_picture_url) {
+        return user.value.profile_picture_url;
+    }
+    return '/default-avatar.png'; // You can add a default avatar image
+});
 </script>
 
 <template>
     <div class="flex items-center gap-2 mb-6">
+        <img
+            :src="profilePictureUrl"
+            alt="Profile Picture"
+            class="w-12 h-12 rounded-full cursor-pointer border-2 border-gray-600 shadow-md"
+            @click="showProfileForm = true"
+        >
         <p>اهلا , {{ username }}!</p>
     </div>
     
@@ -62,4 +78,11 @@ const username = computed(() => page.props.auth.user.username);
             </li>
         </ul>
     </nav>
+
+    <!-- Profile Picture Form Modal -->
+    <ProfilePictureForm
+        :user="user"
+        :show="showProfileForm"
+        @close="showProfileForm = false"
+    />
 </template>

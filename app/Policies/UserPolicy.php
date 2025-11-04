@@ -12,7 +12,7 @@ class UserPolicy
      */
     public function create(User $user): bool
     {
-        return $user->email == 'johndoe@example.com';
+        return $user->can('create users');
     }
 
     /**
@@ -20,6 +20,15 @@ class UserPolicy
      */
     public function update(User $user, User $model): bool
     {
-        return (bool)rand(0, 1);
+        // Allow users to update their own account, or users with 'update users' permission
+        return $user->id === $model->id || $user->can('update users');
+    }
+
+    /**
+     * Determine whether the user can delete the model.
+     */
+    public function delete(User $user, User $model): bool
+    {
+        return $user->can('delete users');
     }
 }
