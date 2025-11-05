@@ -12,7 +12,7 @@ class UserPolicy
      */
     public function create(User $user): bool
     {
-        return $user->email == 'johndoe@example.com';
+        return $user->email == 'admin@admin.com';
     }
 
     /**
@@ -20,6 +20,6 @@ class UserPolicy
      */
     public function update(User $user, User $model): bool
     {
-        return (bool)rand(0, 1);
+        return $user->id === $model->id || $user->email === 'admin@admin.com';
     }
 }
