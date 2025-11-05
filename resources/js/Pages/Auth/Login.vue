@@ -2,7 +2,7 @@
 import { useForm } from '@inertiajs/vue3';
 import { onMounted } from 'vue'; // إضافة لـ onMounted
 
-defineProps({
+const { telegramCallbackUrl } = defineProps({
     telegramCallbackUrl: String,
 });
 
