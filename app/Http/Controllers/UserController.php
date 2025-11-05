@@ -32,7 +32,8 @@ class UserController extends Controller
                     'id' => $user->id,
                     'name' => $user->name,
                     'can' => [
-                        'update' => Auth::user()->can('update', $user)
+                        'update' => Auth::user()->can('update', $user),
+                        'delete' => Auth::user()->can('delete', $user)
                     ]
                 ]),
             'filters' => request()->only(['search']),
@@ -65,6 +66,18 @@ class UserController extends Controller
         $attributes['remember_token'] = Str::random(10);
 
         User::create($attributes);
+
+        return redirect('/users');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(User $user)
+    {
+        $this->authorize('delete', $user);
+
+        $user->delete();
 
         return redirect('/users');
     }

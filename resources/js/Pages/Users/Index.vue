@@ -22,6 +22,16 @@ watch(search, debounce(value => {
     });
 }, 300))
 
+function deleteUser(userId) {
+    if (confirm('Are you sure you want to delete this user?')) {
+        router.delete(`/users/${userId}`, {}, {
+            onSuccess: () => {
+                // Optionally refresh the page or show a success message
+            }
+        });
+    }
+}
+
 </script>
 
 <template>
@@ -55,11 +65,15 @@ watch(search, debounce(value => {
                                     </div>
                                 </td>
 
-                                <td v-if="user.can.update" class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <Link :href="`/users/${user.id}/edit`"
-                                        class="text-indigo-600 hover:text-indigo-900">
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <Link v-if="user.can.update" :href="`/users/${user.id}/edit`"
+                                        class="text-indigo-600 hover:text-indigo-900 mr-4">
                                     Edit
                                     </Link>
+                                    <button v-if="user.can.delete" @click="deleteUser(user.id)"
+                                        class="text-red-600 hover:text-red-900">
+                                    Delete
+                                    </button>
                                 </td>
                             </tr>
                         </tbody>

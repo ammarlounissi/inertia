@@ -19,4 +19,5 @@ Route::middleware('auth')->group(function () {
     Route::get('/users', [UserController::class, 'index']);
     Route::get('/users/create', [UserController::class, 'create'])->can('create', User::class);
     Route::post('/users/create', [UserController::class, 'store']);
+    Route::delete('/users/{user}', [UserController::class, 'destroy'])->can('delete', 'user');
 });
