@@ -19,5 +19,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/users', [UserController::class, 'index']);
     Route::get('/users/create', [UserController::class, 'create'])->can('create', User::class);
     Route::post('/users/create', [UserController::class, 'store']);
+    Route::get('/users/{user}/edit', [UserController::class, 'edit'])->can('update', 'user');
+    Route::put('/users/{user}', [UserController::class, 'update'])->can('update', 'user');
     Route::delete('/users/{user}', [UserController::class, 'destroy'])->can('delete', 'user');
 });
