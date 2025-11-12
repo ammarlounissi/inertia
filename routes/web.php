@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VerseController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -23,3 +24,5 @@ Route::middleware('auth')->group(function () {
     Route::put('/users/{user}', [UserController::class, 'update'])->can('update', 'user');
     Route::delete('/users/{user}', [UserController::class, 'destroy'])->can('delete', 'user');
 });
+
+Route::get('/verses', [VerseController::class, 'index'])->name('verses.index');
