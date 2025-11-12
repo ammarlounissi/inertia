@@ -1,7 +1,5 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
-import Layout from '@/Layouts/AuthenticatedLayout.vue'; // افتراض وجود تخطيط معتمد
-
 // تعريف الخصائص (Props) التي يتم تمريرها من الكنترولر
 defineProps({
     verses: Object, // يحتوي على بيانات التصفية (data, links, meta)
