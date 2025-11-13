@@ -51,5 +51,20 @@ php artisan migrate --seed
 php artisan serve
 npm run dev
 ```
+نسخ ملف sqlالام 
+database/data/warshData_v2-1.sql
+عن طريق هذا الامر في الطرفية 
+mysql -u root -p learn_inertia < /home/ammar/Documents/DEV/learn-inertia/database/data/warshData_v2-1.sql
+يمكن نسخ الملف من واجهة phpAdmin الى قاعدة البيانات مباشرة
+هذا الجدول للقراءة فقط ولاينبغي الكتابة فيه او تعديله
+سيتم انشاء جدول ايات القران الكريم كاملا 
+بعد ذلك لابد من انشاء الجداول المساعدة 
+جدول السور /جدول الاجزاء /جدول الصفحات 
+
+
+
+
+
+
 
 ### Done!
