@@ -9,14 +9,30 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pages', function (Blueprint $table) {
-            // رقم الصفحة 1-604
-            $table->unsignedSmallInteger('id')->primary(); 
             
-            // مفاتيح أجنبية
-            // نستخدم restrict لمنع حذف السورة/الجزء إذا كانت مرتبطة بصفحة
-            $table->foreignId('surah_id')->constrained('surahs')->onDelete('restrict');
-            $table->foreignId('juz_id')->constrained('juzs')->onDelete('restrict');
+            // 1. المفتاح الأساسي (PK): رقم الصفحة الفعلي (1-604)
+            // نستخدم SmallInteger لتقليل المساحة
+            $table->unsignedSmallInteger('id')->primary()->comment('رقم الصفحة في المصحف 1-604');
+            
+            // 2. المفتاح الأجنبي لـ surahs
+            // يجب أن يتطابق مع نوع surahs.id، وهو unsignedTinyInteger
+            $table->unsignedTinyInteger('surah_id'); 
+            
+            // 3. المفتاح الأجنبي لـ juzs
+            // يتطابق مع نوع juzs.id، وهو unsignedTinyInteger
+            $table->unsignedTinyInteger('juz_id'); 
 
+            // 4. تعريف القيود (Foreign Keys) يدوياً
+            // نستخدم references و on بدلاً من constrained()
+            
+            $table->foreign('surah_id')
+                  ->references('id')->on('surahs')
+                  ->onDelete('restrict');
+
+            $table->foreign('juz_id')
+                  ->references('id')->on('juzs')
+                  ->onDelete('restrict');
+            
             // لا يوجد timestamps
         });
     }

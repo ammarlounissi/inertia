@@ -69,7 +69,7 @@ database/data/warshData_v2-1.sql
  الامر المعروف php artisan migrate  ثم php artisan db:seed
  اما جدول السور فملأته عن طريق كوموند ذكية من قاعدة البيانات مباشرة 
   ### php artisan app:import-surahs
-
+ملا الجداول عملية غير منظمة بعضها ب seeders وبعضها بالكوموند importواخرها جدول الايات باستعمال اوامر mysql وكانت رائعة وسريعة جدا
 
 
 
