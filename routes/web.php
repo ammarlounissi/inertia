@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VerseController;
+use App\Http\Controllers\QuranController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -26,3 +27,4 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/verses', [VerseController::class, 'index'])->name('verses.index');
+Route::get('/mushaf', [QuranController::class, 'index'])->name('quran.mushaf');
