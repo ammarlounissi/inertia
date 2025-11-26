@@ -1,0 +1,27 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+@font-face {
+    font-family: 'UthmanicWarsh';
+    src: url('/fonts/uthmanic_warsh_v21.ttf') format('truetype'); /* تأكد من المسار */
+    font-weight: normal;
+    font-style: normal;
+    /* يفضل استخدام هذا الخط لنصوص الآيات فقط */
+}
+
+/* يمكنك إضافة بعض قواعد TailwindCSS لضمان ظهور الآية بشكل جيد */
+.aya-text {
+    font-family: 'UthmanicWarsh', serif;
+    font-size: 2.25rem; /* حجم خط كبير */
+    line-height: 2.5; /* تباعد كبير لظهور الرموز بشكل واضح */
+    text-align: right;
+}
