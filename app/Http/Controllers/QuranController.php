@@ -2,64 +2,77 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Verse;
+use App\Models\Juz;
+use App\Models\Page;
 use App\Models\Surah;
-use App\Http\Resources\VerseResource;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class QuranController extends Controller
 {
     /**
-     * عرض صفحة تصفح القرآن مع دعم البحث والتصفية.
+     * عرض صفحة المصحف مع إمكانية التنقل بالصفحة، السورة، أو الجزء.
      */
     public function index(Request $request)
     {
-        // 1. تحديد الرواية الافتراضية (يمكن جلبها من إعدادات المستخدم)
-        $riwayaId = $request->input('riwaya_id', 1);
+        // تحديد رقم الصفحة الافتراضي (صفحة البداية) أو استلامه من الطلب
+        $pageNumber = $request->query('page', 1);
 
-        // 2. بناء الاستعلام الأساسي (Base Query)
-        $query = Verse::query()
-            ->where('riwaya_id', $riwayaId)
-            ->with(['surah', 'page', 'juz']); // تجنب N+1
+        // إذا كان التنقل بواسطة السورة
+        if ($surahId = $request->query('surah')) {
+            $surah = Surah::find($surahId);
+            if ($surah) {
+                // افتراضياً، لديك حقل في جدول السور يحدد صفحة بداية السورة
+                // لغرض هذا المثال، سأفترض وجود حقل `start_page` في موديل `Surah`.
+                // (يجب أن يتم ملء هذه البيانات من قاعدة بيانات المصحف)
+                $startPage = Page::whereHas('verses', function ($query) use ($surahId) {
+                    $query->where('surah_id', $surahId);
+                })->min('id');
 
-        // 3. تطبيق شروط البحث والتصفية (Conditional Filtering)
-        $query->when($request->filled('search_term'), function ($q) use ($request) {
-            $searchTerm = '%' . $request->input('search_term') . '%';
-            // البحث عن النص في حقل 'text'
-            return $q->where('text', 'LIKE', $searchTerm);
-        });
+                $pageNumber = $startPage ?? 1;
+            }
+        }
 
-        $query->when($request->filled('surah_id'), function ($q) use ($request) {
-            // التصفية حسب السورة
-            return $q->where('surah_id', $request->input('surah_id'));
-        });
+        // إذا كان التنقل بواسطة الجزء
+        if ($juzId = $request->query('juz')) {
+            $juz = Juz::find($juzId);
+            if ($juz) {
+                // افتراضياً، لديك حقل في جدول الأجزاء يحدد صفحة بداية الجزء
+                // لغرض هذا المثال، سأفترض وجود حقل `start_page` في موديل `Juz`.
+                $startPage = Page::whereHas('verses', function ($query) use ($juzId) {
+                    $query->where('juz_id', $juzId);
+                })->min('id');
 
-        $query->when($request->filled('juz_id'), function ($q) use ($request) {
-            // التصفية حسب الجزء
-            return $q->where('juz_id', $request->input('juz_id'));
-        });
+                $pageNumber = $startPage ?? 1;
+            }
+        }
+
+        // التأكد من أن رقم الصفحة ضمن النطاق (1-604)
+        $pageNumber = max(1, min(604, (int) $pageNumber));
         
-        // 4. جلب النتائج مع التصفح وحفظ متغيرات الـ Query String
-        $verses = $query
-            ->orderBy('id', 'asc')
-            ->paginate(20)
-            ->withQueryString();
-
-        // 5. جلب قائمة السور للاستخدام في قوائم التصفية المنسدلة (Dropdowns)
-        $surahs = Surah::select('id', 'name_ar')->orderBy('id')->get();
+        // جلب بيانات الصفحة الحالية مع علاقاتها
+        $currentPage = Page::with(['verses' => function ($query) {
+            // جلب الآيات المرتبة داخل الصفحة
+            $query->orderBy('id', 'asc');
+        }, 'verses.surah', 'verses.juz', 'verses.riwaya'])->find($pageNumber);
 
 
-        // 6. إرجاع استجابة Inertia
-        return Inertia::render('Quran/MushafViewer', [
-            // استخدام الـ Resource لتهيئة البيانات
-            'verses' => VerseResource::collection($verses), 
-            
-            // تمرير الفلاتر الحالية للواجهة للحفاظ على حالة الـ Form
-            'filters' => $request->only(['riwaya_id', 'search_term', 'surah_id', 'juz_id']),
-            
-            // تمرير قائمة السور لإنشاء Dropdown
+        // إذا لم يتم العثور على الصفحة (رغم أننا قمنا بالتأكد من النطاق)، نعرض صفحة 1
+        if (! $currentPage) {
+            $currentPage = Page::with(['verses.surah', 'verses.juz', 'verses.riwaya'])->find(1);
+        }
+
+        // جلب قائمة السور والأجزاء لاستخدامها في شريط التنقل
+        $surahs = Surah::orderBy('id')->get(['id', 'name_ar']);
+        $juzs = Juz::orderBy('id')->get(['id', 'name']);
+
+        return Inertia::render('Quran/Mushaf', [
+            'currentPage' => $currentPage,
             'surahs' => $surahs,
+            'juzs' => $juzs,
+            'nextPage' => $pageNumber < 604 ? $pageNumber + 1 : null,
+            'prevPage' => $pageNumber > 1 ? $pageNumber - 1 : null,
+            'initialPageNumber' => (int) $pageNumber,
         ]);
     }
 }

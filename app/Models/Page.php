@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
 
 class Page extends Model
 {
@@ -25,5 +27,9 @@ class Page extends Model
     public function juz(): BelongsTo
     {
         return $this->belongsTo(Juz::class);
+    }
+    public function verses(): HasMany
+    {
+        return $this->hasMany(Verse::class, 'page_id', 'id');
     }
 }
