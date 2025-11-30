@@ -29,8 +29,8 @@ const username = computed(() => page.props.auth.user.username);
             </li>
 
             <li>
-                <NavLink href="/posts" :active="$page.component.startsWith('Posts')">
-                    المقالات
+                <NavLink href="/qurantelef" :active="$page.component.startsWith('QuranApptelef')">
+                    مصحف الهاتف
                 </NavLink>
             </li>
 
