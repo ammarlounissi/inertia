@@ -6,6 +6,7 @@ use App\Http\Controllers\VerseController;
 use App\Http\Controllers\QuranController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 Route::get('/login', [LoginController::class, 'create'])->name('login');
 Route::post('/login', [LoginController::class, 'store']);
@@ -28,3 +29,9 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/verses', [VerseController::class, 'index'])->name('verses.index');
 Route::get('/mushaf', [QuranController::class, 'index'])->name('quran.mushaf');
+
+
+
+Route::get('/quran', function () {
+    return Inertia::render('QuranApp');
+})->name('quran.app');
