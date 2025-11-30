@@ -2,7 +2,7 @@
     "name": "تطبيق القران الكريم",
     "short_name": "المصحف",
     "description": "تطبيق لعرض وتصفح صفحات المصحف الشريف بشكل سلس.",
-    "start_url": "/mushaf",
+    "start_url": "/",
     "display": "standalone",
     "background_color": "#f5f5dc",
     "theme_color": "#006400",
