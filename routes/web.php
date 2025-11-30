@@ -36,3 +36,7 @@ Route::get('/mushaf', [QuranController::class, 'index'])->name('quran.mushaf');
 Route::get('/quran', function () {
     return Inertia::render('QuranApp');
 })->name('quran.app');
+
+Route::get('/qurantelef', function () {
+    return Inertia::render('QuranApptelef');
+})->name('quranApptelef.app');
