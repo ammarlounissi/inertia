@@ -18,6 +18,7 @@ Route::get('/telegram/callback', [LoginController::class, 'telegramCallback'])->
 Route::middleware('auth')->group(function () {
     Route::inertia('/', 'Home');
     Route::inertia('/settings', 'Settings');
+    Route::inertia('/dada', 'dada');
 
     Route::get('/users', [UserController::class, 'index']);
     Route::get('/users/create', [UserController::class, 'create'])->can('create', User::class);
